@@ -222,11 +222,12 @@ class SftpAdapter implements FilesystemAdapter
 
         $attributes = $this->convertListingToAttributes($path, $stat);
 
-        if ( ! $attributes instanceof FileAttributes) {
-            throw UnableToRetrieveMetadata::create($path, $type, 'path is not a file');
-        }
-
-        return $attributes;
+        return new FileAttributes(
+            $path,
+            $stat['size'],
+            $attributes['visibility'],
+            $attributes['lastModified'],
+        );
     }
 
     public function mimeType(string $path): FileAttributes
